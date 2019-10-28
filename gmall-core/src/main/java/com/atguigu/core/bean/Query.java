@@ -10,8 +10,8 @@ package com.atguigu.core.bean;
 
 import com.atguigu.core.utils.SQLFilter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 查询参数
@@ -40,7 +40,7 @@ public class Query<T> {
         }
 
         //分页对象
-        Page<T> page = new Page<>(curPage, limit);
+        Page<T> page = new Page<T>(curPage, limit);
 
         //分页参数
 //        params.put(Constant.PAGE, page);
