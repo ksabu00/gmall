@@ -1,10 +1,10 @@
 spring:
   application:
-    name: oms-service
+    name: wms-server
   cloud:
     nacos:
       config:
         server-addr: 127.0.0.1:8848
-        namespace: 935db8e6-e775-4846-861b-6f8ac47364bc
-        file-extension: yml
+        namespace: 6e0183dc-1e71-49af-a497-207d5e2a0ce2
         group: dev
+        file-extension: yml
