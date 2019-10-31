@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.HashMap;
 
 @SpringBootTest
 class GmallPmsApplicationTests {
@@ -36,10 +35,10 @@ class GmallPmsApplicationTests {
 //        map.put("name", "fds发多少");
 //        System.out.println(this.brandDao.selectList(new QueryWrapper<BrandEntity>().eq("name", "test2")));
         //IPage<BrandEntity> page = this.brandDao.page(new Page<BrandEntity>(2l, 2l), new QueryWrapper<BrandEntity>());
-        IPage<BrandEntity> page = this.brandService.page(new Page<>(2, 2), new QueryWrapper<BrandEntity>());
+      /*  IPage<BrandEntity> page = this.brandService.page(new Page<>(2, 2), new QueryWrapper<BrandEntity>());
         System.out.println("当前页数据为：" + page.getRecords());
         System.out.println("总页数：" + page.getPages());
-        System.out.println("总条数" + page.getTotal());
+        System.out.println("总条数" + page.getTotal());*/
     }
 
 }

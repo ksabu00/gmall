@@ -1,12 +1,14 @@
 package com.atguigu.gmall.pms.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
 import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.pms.dao.AttrAttrgroupRelationDao;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,15 @@ import com.atguigu.gmall.pms.service.AttrAttrgroupRelationService;
 public class AttrAttrgroupRelationController {
     @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+    @ApiOperation("删除关联关系")
+    @PostMapping("/delete/attr")
+    public Resp<String> deleteRelationById(@RequestBody List<AttrAttrgroupRelationEntity> relationEntities){
+
+        this.attrAttrgroupRelationService.delete(relationEntities);
+        return Resp.ok("删除成功");
+    }
+
 
     /**
      * 列表

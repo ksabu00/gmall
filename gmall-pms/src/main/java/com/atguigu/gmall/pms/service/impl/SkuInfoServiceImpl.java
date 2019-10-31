@@ -1,6 +1,9 @@
 package com.atguigu.gmall.pms.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +19,9 @@ import com.atguigu.gmall.pms.service.SkuInfoService;
 
 @Service("skuInfoService")
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> implements SkuInfoService {
+
+    @Autowired
+    private SkuInfoDao skuInfoDao;
 
     @Override
     public PageVo queryPage(QueryCondition params) {

@@ -1,12 +1,12 @@
 package com.atguigu.gmall.pms.controller;
 
 import java.util.Arrays;
-import java.util.Map;
 
 
 import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.pms.vo.AttrVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,21 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
+    @PostMapping("/save")
+    @ApiOperation("保存")
+    @PreAuthorize("hasAuthority('pms:attr:save')")
+    public Resp<String> save(@RequestBody AttrVO attrVO){
+        this.attrService.saveAttrVO(attrVO);
+        return Resp.ok("保存成功");
+    }
+
+    @ApiOperation("根据条件分页查询")
+    @GetMapping
+    public Resp<PageVo> gitAttr(@RequestParam("cid")Long cid, @RequestParam("type")Integer type, QueryCondition condition){
+        PageVo pageVo = this.attrService.queryByCidTypePage(condition, cid, type);
+        return  Resp.ok(pageVo);
+    }
+
     /**
      * 列表
      */
@@ -56,18 +71,6 @@ public class AttrController {
 		AttrEntity attr = attrService.getById(attrId);
 
         return Resp.ok(attr);
-    }
-
-    /**
-     * 保存
-     */
-    @ApiOperation("保存")
-    @PostMapping("/save")
-    @PreAuthorize("hasAuthority('pms:attr:save')")
-    public Resp<Object> save(@RequestBody AttrEntity attr){
-		attrService.save(attr);
-
-        return Resp.ok(null);
     }
 
     /**

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.sms.VO.SaleVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,18 @@ public class SkuBoundsController {
     private SkuBoundsService skuBoundsService;
 
     /**
+     * 保存
+     */
+    @ApiOperation("保存")
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('sms:skubounds:save')")
+    public Resp<Object> save(@RequestBody SaleVO saleVO){
+        skuBoundsService.saveSale(saleVO);
+
+        return Resp.ok(null);
+    }
+
+    /**
      * 列表
      */
     @ApiOperation("分页查询(排序)")
@@ -56,18 +69,6 @@ public class SkuBoundsController {
 		SkuBoundsEntity skuBounds = skuBoundsService.getById(id);
 
         return Resp.ok(skuBounds);
-    }
-
-    /**
-     * 保存
-     */
-    @ApiOperation("保存")
-    @PostMapping("/save")
-    @PreAuthorize("hasAuthority('sms:skubounds:save')")
-    public Resp<Object> save(@RequestBody SkuBoundsEntity skuBounds){
-		skuBoundsService.save(skuBounds);
-
-        return Resp.ok(null);
     }
 
     /**
