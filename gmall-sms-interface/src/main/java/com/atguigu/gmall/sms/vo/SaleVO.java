@@ -1,4 +1,4 @@
-package com.atguigu.gmall.sms.VO;
+package com.atguigu.gmall.sms.vo;
 
 import lombok.Data;
 
