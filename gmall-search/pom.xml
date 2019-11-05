@@ -9,11 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.atguigu</groupId>
-    <artifactId>gmall-wms</artifactId>
+    <artifactId>gmall-search</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gmall-wms</name>
-    <description>仓库管理系统</description>
-
+    <name>gmall-search</name>
+    <description>谷粒商城搜索服务</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -21,41 +20,47 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>6.8.1</version>
+        </dependency>
         <dependency>
             <groupId>com.atguigu</groupId>
             <artifactId>gmall-wms-interface</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>2.2.0.RELEASE</version>
+            <groupId>com.atguigu</groupId>
+            <artifactId>gmall-pms-interface</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.47</version>
+            <groupId>io.searchbox</groupId>
+            <artifactId>jest</artifactId>
+            <version>6.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.atguigu</groupId>
             <artifactId>gmall-core</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <exclusions>
+
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>6.8.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -74,14 +79,10 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.atguigu</groupId>
+            <artifactId>gmall-pms-interface</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -113,4 +114,5 @@
             <url>https://repo.spring.io/milestone</url>
         </repository>
     </repositories>
+
 </project>

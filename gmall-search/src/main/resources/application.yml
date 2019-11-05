@@ -1,0 +1,10 @@
+server:
+  port: 8086
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  elasticsearch:
+    jest:
+      uris: 47.102.100.157:9200

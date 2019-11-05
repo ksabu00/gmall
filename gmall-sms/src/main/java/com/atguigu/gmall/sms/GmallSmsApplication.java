@@ -7,9 +7,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@EnableDiscoveryClient
 @EnableSwagger2
-@RefreshScope
+@EnableDiscoveryClient
 public class GmallSmsApplication {
 
     public static void main(String[] args) {
