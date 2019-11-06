@@ -1,6 +1,5 @@
 package com.atguigu.gmall.search;
 
-import com.atguigu.core.bean.PageVo;
 import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.core.bean.Resp;
 import com.atguigu.gmall.pms.entity.BrandEntity;
@@ -32,7 +31,7 @@ class GmallSearchApplicationTests {
     @Autowired
     private GmallPmsClient gmallPmsClient;
 
-    @Test
+    /*@Test
     public void importData(){
         Long pageNum = 1L;
         Long pageSize = 100L;
@@ -81,10 +80,10 @@ class GmallSearchApplicationTests {
                         goodsVO.setProductCategoryId(skuInfoEntity.getCatalogId());
                     }
 
-                    /*// 设置搜索属性
-                    Resp<List<SpuAttributeValueVO>> searchAttrValueResp = this.gmallPmsClient.querySearchAttrValue(spuInfoEntity.getId());
-                    List<SpuAttributeValueVO> spuAttributeValueVOList = searchAttrValueResp.getData();
-                    goodsVO.setAttrValueList(spuAttributeValueVOList);*/
+                    // 设置搜索属性
+                    //Resp<List<SpuAttributeValueVO>> searchAttrValueResp = this.gmallPmsClient.querySearchAttrValue(spuInfoEntity.getId());
+                    //List<SpuAttributeValueVO> spuAttributeValueVOList = searchAttrValueResp.getData();
+                    //goodsVO.setAttrValueList(spuAttributeValueVOList);
 
                     // 设置搜索属性
                     System.out.println(spuInfoEntity.getId());
@@ -93,6 +92,7 @@ class GmallSearchApplicationTests {
                     List<SpuAttributeValueVO> spuAttributeValueVOList = searchAttrValueResp.getData();
                     System.out.println("打印数据 " + spuAttributeValueVOList);
                     goodsVO.setAttrValueList(spuAttributeValueVOList);
+
 
                     // 库存信息
                     Resp<List<WareSkuEntity>> resp = this.gmallWmsClient.queryWareSkuBySkuId(skuInfoEntity.getSkuId());
@@ -113,7 +113,7 @@ class GmallSearchApplicationTests {
             pageSize = Long.valueOf(spuInfoEntities.size()); // 获取当前页的记录数
             pageNum++; // 下一页
         }while (pageSize == 100);// 循环条件
-    }
+    }*/
     /*
     @Test
     void contextLoads() {
