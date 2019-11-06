@@ -39,7 +39,7 @@ public class SkuBoundsController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('sms:skubounds:save')")
-    public Resp<Object> save(@RequestBody SaleVO saleVO){
+    public Resp<Object> saveSale(@RequestBody SaleVO saleVO){
         skuBoundsService.saveSale(saleVO);
 
         return Resp.ok(null);

@@ -144,7 +144,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             SaleVO saleVO = new SaleVO();
             BeanUtils.copyProperties(skuInfoVO, saleVO);
 
-            this.smsClient.save(saleVO);
+            this.smsClient.saveSale(saleVO);
         });
     }
 

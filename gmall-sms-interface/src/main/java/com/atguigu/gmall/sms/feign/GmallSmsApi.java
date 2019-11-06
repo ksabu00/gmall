@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface GmallSmsApi {
     @PostMapping("sms/skubounds/save")
-    public Resp<Object> save(@RequestBody SaleVO saleVO);
+    public Resp<Object> saveSale(@RequestBody SaleVO saleVO);
 }
