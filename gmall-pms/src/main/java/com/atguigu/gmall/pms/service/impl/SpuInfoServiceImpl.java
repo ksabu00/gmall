@@ -10,6 +10,7 @@ import com.atguigu.gmall.pms.service.ProductAttrValueService;
 import com.atguigu.gmall.pms.service.SkuImagesService;
 import com.atguigu.gmall.pms.service.SkuSaleAttrValueService;
 import com.atguigu.gmall.sms.vo.SaleVO;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,36 +51,32 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private GmallSmsClient smsClient;
 
     @Override
+    @GlobalTransactional
     public void saveSpuInfoVO(SpuInfoVO spuInfoVo) {
         //// 1：保存spu相关信息，获取spu_id
 
         // 1.1 保存spu基本信息获取spu_info
-        spuInfoVo.setPublishStatus(1);// 默认为已上架
-        spuInfoVo.setCreateTime(new Date());
-        spuInfoVo.setUodateTime(spuInfoVo.getCreateTime());
-        this.save(spuInfoVo);
-         Long spuId = spuInfoVo.getId();// 获取新增后的id
+        Long spuId = saveSpuInfo(spuInfoVo);
 
         // 1.2 保存spu的描述信息 spu_info_desc
-        SpuInfoDescEntity spuInfoDescEntity = new SpuInfoDescEntity();
-        // 注意：spu_info_desc的主键时spu_id；需要在实体类中设置
-        spuInfoDescEntity.setSpuId(spuId);
-        // 将图片描述，保存到spu详情中，图片地址以逗号分割
-        spuInfoDescEntity.setDecript(StringUtils.join(spuInfoVo.getSpuImages(), ","));
-        this.spuInfoDescDao.insert(spuInfoDescEntity);
+        saveSpuDesc(spuInfoVo, spuId);
 
         // 1.3 保存spu的规格参数信息
-        List<ProductAttrValueVO> baseAttrs = spuInfoVo.getBaseAttrs();
-        if (!CollectionUtils.isEmpty(baseAttrs)){
-            List<ProductAttrValueEntity> productAttrValueEntities = baseAttrs.stream().map(productAttrValueVO -> {
-                productAttrValueVO.setSpuId(spuId);
-                productAttrValueVO.setAttrSort(0);
-                productAttrValueVO.setQuickShow(0);
-                return productAttrValueVO;
-            }).collect(Collectors.toList());
-            this.productAttrValueService.saveBatch(productAttrValueEntities);
-        }
+        saveBaseAttrs(spuInfoVo, spuId);
+
         // 2：保存sku相关信息
+        // 3 保存营销相关信息，需要远程调用gmall-sms
+        // 3.1 积分优惠
+        // 3.2 满减优惠
+        // 3.3 数量折扣
+        saveSkuInfoWithSaleInfo(spuInfoVo, spuId);
+
+        // 最后制造异常
+        //int i = 1 / 0;
+    }
+
+    public void saveSkuInfoWithSaleInfo(SpuInfoVO spuInfoVo, Long spuId) {
+
         List<SkuInfoVO> skuInfoVOs = spuInfoVo.getSkus();
         // 如果sku信息不为空则继续
         if (CollectionUtils.isEmpty(skuInfoVOs)){
@@ -146,6 +143,36 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
             this.smsClient.saveSale(saleVO);
         });
+    }
+
+    public void saveBaseAttrs(SpuInfoVO spuInfoVo, Long spuId) {
+        List<ProductAttrValueVO> baseAttrs = spuInfoVo.getBaseAttrs();
+        if (!CollectionUtils.isEmpty(baseAttrs)){
+            List<ProductAttrValueEntity> productAttrValueEntities = baseAttrs.stream().map(productAttrValueVO -> {
+                productAttrValueVO.setSpuId(spuId);
+                productAttrValueVO.setAttrSort(0);
+                productAttrValueVO.setQuickShow(0);
+                return productAttrValueVO;
+            }).collect(Collectors.toList());
+            this.productAttrValueService.saveBatch(productAttrValueEntities);
+        }
+    }
+
+    public void saveSpuDesc(SpuInfoVO spuInfoVo, Long spuId) {
+        SpuInfoDescEntity spuInfoDescEntity = new SpuInfoDescEntity();
+        // 注意：spu_info_desc的主键时spu_id；需要在实体类中设置
+        spuInfoDescEntity.setSpuId(spuId);
+        // 将图片描述，保存到spu详情中，图片地址以逗号分割
+        spuInfoDescEntity.setDecript(StringUtils.join(spuInfoVo.getSpuImages(), ","));
+        this.spuInfoDescDao.insert(spuInfoDescEntity);
+    }
+
+    public Long saveSpuInfo(SpuInfoVO spuInfoVo) {
+        spuInfoVo.setPublishStatus(1);// 默认为已上架
+        spuInfoVo.setCreateTime(new Date());
+        spuInfoVo.setUodateTime(spuInfoVo.getCreateTime());
+        this.save(spuInfoVo);
+        return spuInfoVo.getId();
     }
 
     @Override

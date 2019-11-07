@@ -21,6 +21,7 @@ import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.gmall.sms.dao.SkuBoundsDao;
 import com.atguigu.gmall.sms.entity.SkuBoundsEntity;
 import com.atguigu.gmall.sms.service.SkuBoundsService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
@@ -41,6 +42,7 @@ public class SkuBoundsServiceImpl extends ServiceImpl<SkuBoundsDao, SkuBoundsEnt
     }
 
     @Override
+    @Transactional
     public void saveSale(SaleVO saleVO) {
         // 3.1 新增积分：skuBounds
         SkuBoundsEntity skuBoundsEntity = new SkuBoundsEntity();
