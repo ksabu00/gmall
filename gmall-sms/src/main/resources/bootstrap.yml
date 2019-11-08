@@ -8,3 +8,8 @@ spring:
         namespace: c1c34f5f-f97b-46c4-ac95-399afeaacee1
         group: dev
         file-extension: yml
+  rabbitmq:
+    host: 47.102.100.157
+    username: rabbitmq
+    password: rabbitmq
+    virtual-host: /fengge

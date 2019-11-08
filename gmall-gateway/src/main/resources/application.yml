@@ -26,7 +26,13 @@ spring:
         - id: sms-route # 营销管理路由
           uri: lb://sms-service
           predicates:
-            - Path=/sms/**
+           - Path=/sms/**
+        - id: index-route # 营销管理路由
+          uri: lb://index-service
+          predicates:
+            - Path=/api/index/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
         - id: search-route # 营销管理路由
           uri: lb://search-service
           predicates:

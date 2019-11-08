@@ -8,12 +8,10 @@ import com.atguigu.gmall.pms.entity.BrandEntity;
 import com.atguigu.gmall.pms.entity.CategoryEntity;
 import com.atguigu.gmall.pms.entity.SkuInfoEntity;
 import com.atguigu.gmall.pms.entity.SpuInfoEntity;
+import com.atguigu.gmall.pms.vo.CategoryVO;
 import com.atguigu.gmall.pms.vo.SpuAttributeValueVO;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,11 +36,20 @@ public interface GmallPmsApi {
     @GetMapping("pms/category/info/{catId}")
     public Resp<CategoryEntity> queryCateGoryById(@PathVariable("catId") Long catId);
 
+    @GetMapping("pms/category")
+    @ApiOperation("根据分类等级id来查询分类")
+    public Resp<List<CategoryEntity>> queryCategory(@RequestParam(value = "level", defaultValue = "0")Integer level,
+                                                    @RequestParam(value = "parentCid", required = false)Long parentCid);
+
     // 根据skuId查询库存
 
 
     // 根据spuId查询检索属性
     @GetMapping("pms/productattrvalue/{spuId}")
     public Resp<List<SpuAttributeValueVO>> querySearchAttrValue(@PathVariable("spuId")Long spuId);
+
+
+    @GetMapping("pms/category/{pid}")
+    public Resp<List<CategoryVO>> queryCategoryWithSub(@PathVariable("pid")Long pid);
 
 }

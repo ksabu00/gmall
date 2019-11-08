@@ -49,7 +49,7 @@ class GmallSearchApplicationTests {
             System.out.println();
             // 遍历spuInfo下的所有sku导入到索引库中
             for (SpuInfoEntity spuInfoEntity : spuInfoEntities){
-                System.out.println(spuInfoEntity.getId());
+                //System.out.println(spuInfoEntity.getId());
                 Resp<List<SkuInfoEntity>> skuResp = this.gmallPmsClient.querySkuInfoBySpuId(spuInfoEntity.getId());
                 List<SkuInfoEntity> skuInfoEntities = skuResp.getData();
                 if (CollectionUtils.isEmpty(skuInfoEntities)){

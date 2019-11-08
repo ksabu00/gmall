@@ -1,3 +1,28 @@
 #logging:
 #  level:
 #    com.atguigu: debug
+server:
+  port: 8081
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  datasource:
+    url: jdbc:mysql://47.102.100.157:3306/guli_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 174789
+  redis:
+    host: 47.102.100.157
+  rabbitmq:
+    host: 47.102.100.157
+    username: rabbitmq
+    password: rabbitmq
+    virtual-host: /fengge
+mybatis-plus:
+  mapper-locations: classpath:mapper/pms/*.xml
+  global-config:
+    db-config:
+      id-type: auto

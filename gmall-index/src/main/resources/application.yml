@@ -1,0 +1,15 @@
+#logging:
+#  level:
+#    com.atguigu: debug
+server:
+  port: 8087
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  redis:
+    host: 47.102.100.157
+  global-config:
+    db-config:
+      id-type: auto

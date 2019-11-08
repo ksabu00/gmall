@@ -12,6 +12,8 @@ import com.atguigu.gmall.pms.service.SkuSaleAttrValueService;
 import com.atguigu.gmall.sms.vo.SaleVO;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,9 +27,7 @@ import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.gmall.pms.service.SpuInfoService;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -49,6 +49,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private SkuImagesService skuImagesService;
     @Autowired
     private GmallSmsClient smsClient;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     @Override
     @GlobalTransactional
@@ -73,6 +77,15 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         // 最后制造异常
         //int i = 1 / 0;
+        sendMsg(spuId, "insert");
+    }
+
+    public void sendMsg(Long spuId, String type) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", spuId);
+        map.put("type", type);
+        this.amqpTemplate.convertAndSend("GMALL-ITEM-EXCHANGE", "item." + type, map);
+        System.out.println("222");
     }
 
     public void saveSkuInfoWithSaleInfo(SpuInfoVO spuInfoVo, Long spuId) {
