@@ -1,5 +1,6 @@
 package com.atguigu.gmall.index.service;
 
+import com.atguigu.core.bean.Resp;
 import com.atguigu.gmall.pms.entity.CategoryEntity;
 import com.atguigu.gmall.pms.vo.CategoryVO;
 import org.springframework.stereotype.Service;
@@ -14,4 +15,8 @@ public interface IndexService {
     List<CategoryVO> querySubCategory(Long pid);
 
     String testLock();
+
+    String read();
+
+    String write();
 }
