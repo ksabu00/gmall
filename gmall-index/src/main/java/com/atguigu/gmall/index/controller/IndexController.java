@@ -56,4 +56,14 @@ public class IndexController {
     public String write(){
         return this.indexService.write();
     }
+
+    @GetMapping("latch")
+    public  String latch(){
+        return this.indexService.latch();
+    }
+
+    @GetMapping("out")
+    public  String out(){
+        return this.indexService.out();
+    }
 }

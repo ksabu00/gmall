@@ -2,6 +2,7 @@ package com.atguigu.gmall.index.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.atguigu.core.bean.Resp;
+import com.atguigu.gmall.index.annotation.GmallCache;
 import com.atguigu.gmall.index.feign.GmallPmsFeign;
 import com.atguigu.gmall.index.service.IndexService;
 import com.atguigu.gmall.pms.entity.CategoryEntity;
@@ -9,6 +10,7 @@ import com.atguigu.gmall.pms.vo.CategoryVO;
 import org.apache.commons.lang.StringUtils;
 import org.omg.CORBA.TIMEOUT;
 import org.redisson.Redisson;
+import org.redisson.api.RCountDownLatch;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
@@ -17,9 +19,11 @@ import org.springframework.boot.autoconfigure.elasticsearch.jest.JestProperties;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import sun.misc.Cache;
 
 import java.security.PublicKey;
 import java.sql.Time;
@@ -41,9 +45,12 @@ public class IndexServiceImpl implements IndexService {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private JedisPool jedisPool;
-    private static final String KEY_PREFIX = "index:category";
     @Autowired
     private RedissonClient redissonClient;
+
+    private static final String KEY_PREFIX = "index:category";
+    private static final long TIME_OUT = 300001;
+
     @Override
     public List<CategoryEntity> queryLevel1Category() {
 
@@ -54,22 +61,24 @@ public class IndexServiceImpl implements IndexService {
         return categoryResp.getData();
     }
 
-
+    // AOP+反射
     @Override
+    @GmallCache(value = KEY_PREFIX, timeout = TIME_OUT, random = 50000001)
     public List<CategoryVO> querySubCategory(Long pid) {
+
         // 1:查询缓存，缓存中有直接返回
-        String categoryString = this.stringRedisTemplate.opsForValue().get(KEY_PREFIX + pid);
-        if (StringUtils.isNotBlank(categoryString)){
-           return JSON.parseArray(categoryString, CategoryVO.class);
-        }
+//        String categoryString = this.stringRedisTemplate.opsForValue().get(KEY_PREFIX + pid);
+//        if (StringUtils.isNotBlank(categoryString)){
+//           return JSON.parseArray(categoryString, CategoryVO.class);
+//        }
         // 2:缓存中没有，查询数据库
         Resp<List<CategoryVO>> listResp = this.gmallPmsFeign.queryCategoryWithSub(pid);
         List<CategoryVO> categoryVOS = listResp.getData();
 
-        // 3:查询完之后，放入缓存
-        if (!CollectionUtils.isEmpty(categoryVOS)) {
-            this.stringRedisTemplate.opsForValue().set(KEY_PREFIX + pid, JSON.toJSONString(categoryVOS));
-        }
+        // 3:查询完之后，放入缓存(防止短时间内多条数据同时过期(雪崩)，每条设置进去的值都加入保存数据的随机值)
+//        if (!CollectionUtils.isEmpty(categoryVOS)) {
+//            this.stringRedisTemplate.opsForValue().set(KEY_PREFIX + pid, JSON.toJSONString(categoryVOS), (int)(Math.random() * 5), TimeUnit.DAYS);
+//        }
         return categoryVOS;
     }
 
@@ -111,6 +120,35 @@ public class IndexServiceImpl implements IndexService {
         //readWriteLock.writeLock().unlock();
 
         return "写入数据成功" + msg;
+    }
+
+    @Override
+    public String latch() {
+        RCountDownLatch latchDown = this.redissonClient.getCountDownLatch("latchDown");
+
+        String countString = this.stringRedisTemplate.opsForValue().get("count");
+        int count = Integer.parseInt(countString);
+        latchDown.trySetCount(count);
+
+
+        try {
+            latchDown.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "班长锁门";
+    }
+
+    @Override
+    public String out() {
+
+        RCountDownLatch latchDown = this.redissonClient.getCountDownLatch("latchDown");
+        String countString = this.stringRedisTemplate.opsForValue().get("count");
+        int count = Integer.parseInt(countString);
+        this.stringRedisTemplate.opsForValue().set("count", String.valueOf(--count));
+        latchDown.countDown();
+
+        return "出来一个人啦";
     }
 
     // 个人使用完美方案
@@ -160,4 +198,6 @@ public class IndexServiceImpl implements IndexService {
         }
         return "已经添加成功！！！";
     }*/
+
+
 }

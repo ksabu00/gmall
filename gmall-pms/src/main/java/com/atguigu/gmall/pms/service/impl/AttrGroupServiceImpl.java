@@ -1,10 +1,13 @@
 package com.atguigu.gmall.pms.service.impl;
 
+import com.atguigu.gmall.pms.dao.ProductAttrValueDao;
+import com.atguigu.gmall.pms.entity.ProductAttrValueEntity;
 import com.atguigu.gmall.pms.vo.AttrGroupVO;
 import com.atguigu.gmall.pms.dao.AttrAttrgroupRelationDao;
 import com.atguigu.gmall.pms.dao.AttrDao;
 import com.atguigu.gmall.pms.entity.AttrAttrgroupRelationEntity;
 import com.atguigu.gmall.pms.entity.AttrEntity;
+import com.atguigu.gmall.pms.vo.GroupVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ import com.atguigu.gmall.pms.entity.AttrGroupEntity;
 import com.atguigu.gmall.pms.service.AttrGroupService;
 import org.springframework.util.CollectionUtils;
 
+import javax.validation.OverridesAttribute;
+
 
 @Service("attrGroupService")
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
@@ -35,7 +40,10 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
     private AttrAttrgroupRelationDao relationDao;
 
     @Autowired
-    AttrDao attrDao;
+    private AttrDao attrDao;
+
+    @Autowired
+    private ProductAttrValueDao productAttrValueDao;
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -93,6 +101,21 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         }).collect(Collectors.toList());
 
         return attrGroupVOS;
+    }
+
+    @Override
+    public List<GroupVO> queryGroupVOByCid(Long cid , Long spuId) {
+        List<AttrGroupEntity> attrGroupEntities = this.list(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", cid));
+        if (CollectionUtils.isEmpty(attrGroupEntities)){
+            return null;
+        }
+        attrGroupEntities.stream().map(attrGroupEntity -> {
+            GroupVO groupVO = new GroupVO();
+            List<ProductAttrValueEntity> productAttrValueEntities = productAttrValueDao.queryByCidAndSpuId(spuId, attrGroupEntity.getAttrGroupId());
+            groupVO.setBaseAttrValues(productAttrValueEntities);
+            return groupVO;
+        }).collect(Collectors.toList());
+        return null;
     }
 
 }
