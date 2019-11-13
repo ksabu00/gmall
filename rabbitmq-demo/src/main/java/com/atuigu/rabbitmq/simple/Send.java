@@ -3,6 +3,9 @@ package com.atuigu.rabbitmq.simple;
 import com.atuigu.rabbitmq.util.ConnectionUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import org.assertj.core.api.CompletableFutureAssert;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 生产者
@@ -28,5 +31,6 @@ public class Send {
         //关闭通道和连接
         channel.close();
         connection.close();
+
     }
 }

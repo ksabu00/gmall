@@ -1,6 +1,6 @@
 spring:
   rabbitmq:
-    host: 172.16.116.100
-    username: fengge
-    password: fengge
+    host: 47.102.100.157
+    username: rabbitmq
+    password: rabbitmq
     virtual-host: /fengge

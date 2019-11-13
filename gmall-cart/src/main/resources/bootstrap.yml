@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: car-service
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 15af5593-7403-464a-8817-1c2a2724d4a6
+        group: dev
+        file-extension: yml

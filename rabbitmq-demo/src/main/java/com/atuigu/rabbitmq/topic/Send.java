@@ -18,9 +18,9 @@ public class Send {
         // 声明exchange，指定类型为topic
         channel.exchangeDeclare(EXCHANGE_NAME, "topic");
         // 消息内容
-        String message = "新增商品 : id = 1001";
+        String message = "新增商品 : id = 1002";
         // 发送消息，并且指定routing key 为：insert ,代表新增商品
-        channel.basicPublish(EXCHANGE_NAME, "item.insert", null, message.getBytes());
+        channel.basicPublish(EXCHANGE_NAME, "item.delete", null, message.getBytes());
         System.out.println(" [商品服务：] Sent '" + message + "'");
 
         channel.close();

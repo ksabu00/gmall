@@ -11,6 +11,8 @@ spring:
           uri: lb://pms-service
           predicates:
             - Path=/pms/**
+          filters:
+            - Auth
         - id: oms-route # 订单管理路由
           uri: lb://oms-service
           predicates:
@@ -23,20 +25,36 @@ spring:
           uri: lb://wms-server
           predicates:
             - Path=/wms/**
-        - id: sms-route # 营销管理路由
+        - id: sms-route # 销售管理路由
           uri: lb://sms-service
           predicates:
            - Path=/sms/**
-        - id: index-route # 营销管理路由
+        - id: index-route # 首页管理路由
           uri: lb://index-service
           predicates:
             - Path=/api/index/**
           filters:
             - RewritePath=/api(?<segment>/?.*), $\{segment}
-        - id: search-route # 营销管理路由
+        - id: auth-route # 授权中心管理路由
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: cart-route # 订单管理路由
+          uri: lb://cart-service
+          predicates:
+            - Path=/api/cart/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: search-route # 搜索引擎管理路由
           uri: lb://search-service
           predicates:
             - Path=/api/search/**
           filters:
             - RewritePath=/api(?<segment>/?.*), $\{segment}
+auth:
+  jwt:
+    publicKeyPath: C:\\temp\\rsa\\ras.pub
+    cookieName: GMALL_TOKEN
 

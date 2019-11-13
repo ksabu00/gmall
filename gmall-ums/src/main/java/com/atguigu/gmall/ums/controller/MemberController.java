@@ -33,6 +33,32 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    // 单点登录接口
+    @GetMapping("query")
+    public Resp<MemberEntity> queryUser(@RequestParam("username")String username, @RequestParam("password")String password){
+        MemberEntity memberEntity = this.memberService.queryUser(username, password);
+        return Resp.ok(memberEntity);
+    }
+    /**
+     * 注册账号
+     * @param -data
+     * @param -type
+     * @return
+     */
+    @GetMapping("register")
+    public Resp<Object> register(MemberEntity memberEntity, @RequestParam("code")String code){
+        this.memberService.register(memberEntity, code);
+        return Resp.ok(null);
+    }
+
+    //1，用户名；2，手机；3，邮箱
+    @GetMapping("/check/{data}/{type}")
+    public Resp<Boolean> checkData(@PathVariable("data")String data, @PathVariable("type")Integer type){
+        Boolean result = memberService.checkData(data, type);
+
+        return Resp.ok(result);
+    }
+
     /**
      * 列表
      */
