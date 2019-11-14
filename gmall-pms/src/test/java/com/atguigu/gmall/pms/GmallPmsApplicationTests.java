@@ -22,6 +22,11 @@ class GmallPmsApplicationTests {
 
     @Test
     void contextLoads() {
+        /*Integer x = 127;
+        Integer y = 128;
+        System.out.println(x == y);
+
+        String str = "";*/
     }
 
     @Test

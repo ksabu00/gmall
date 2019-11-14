@@ -1,0 +1,14 @@
+server:
+  port: 8089
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+auth:
+  jwt:
+    publicKeyPath: C:\\temp\\rsa\\ras.pub
+    privateKeyPath: C:\\temp\\rsa\\ras.pri
+    expire: 30 # 单位秒
+    cookieName: GMALL_TOKEN
+    secret: fasf788uite-afa-445-fafsaf

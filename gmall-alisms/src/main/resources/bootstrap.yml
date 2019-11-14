@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: alisms-service
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: de9dc741-f4c8-4f71-b171-d14a3e3e19b3
+        group: dev
+        file-extension: yml
+
+

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: car-service
+    name: cart-service
   cloud:
     nacos:
       config:
@@ -8,3 +8,11 @@ spring:
         namespace: 15af5593-7403-464a-8817-1c2a2724d4a6
         group: dev
         file-extension: yml
+
+cart:
+  jwt:
+    pubKeyPath: C:\\temp\\rsa\\ras.pub # 公钥地址
+    cookieName: GMALL_TOKEN # cookie的名称
+    userKeyName: USER_KEY # 未登录购物车的唯一标识
+    expire: 53200 # 过期时间，一个月
+
