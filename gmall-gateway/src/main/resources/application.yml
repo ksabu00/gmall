@@ -47,6 +47,12 @@ spring:
             - Path=/api/cart/**
           filters:
             - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: order-service # 订单服务
+          uri: lb://order-service
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
         - id: search-route # 搜索引擎管理路由
           uri: lb://search-service
           predicates:

@@ -15,6 +15,8 @@ public class Cart {
 
     private BigDecimal price;// 购买单价
 
+    private BigDecimal currentPrice;// 当前价格
+
     private Boolean check;// 是否选中
 
     private String defaultImage;// 订单页默认图片

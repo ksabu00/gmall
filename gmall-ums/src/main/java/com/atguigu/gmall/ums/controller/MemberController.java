@@ -78,7 +78,7 @@ public class MemberController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('ums:member:info')")
-    public Resp<MemberEntity> info(@PathVariable("id") Long id){
+    public Resp<MemberEntity> queryUserById(@PathVariable("id") Long id){
 		MemberEntity member = memberService.getById(id);
 
         return Resp.ok(member);

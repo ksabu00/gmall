@@ -2,7 +2,11 @@ package com.atguigu.gmall.wms.dao;
 
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 商品库存
@@ -13,5 +17,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface WareSkuDao extends BaseMapper<WareSkuEntity> {
-	
+    public List<WareSkuEntity> checkStore(@Param("skuId") Long skuId, @Param("count") Integer count);
+
+    public int lock(@Param("id") Long id, @Param("count") Integer count);
+
+    public int unlock(@Param("id") Long id, @Param("count") Integer count);
 }
